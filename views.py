@@ -17,6 +17,10 @@ app = FastAPI()
 async def login_for_access_token(
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()]
 ):
+    '''
+    Receives data, when user tries to login, returns JWT Token. 
+    Raises exception, if user does not exists.
+    '''
     user = authenticate_user(form_data.username, form_data.password)
     if not user:
         raise HTTPException(
@@ -33,6 +37,9 @@ async def login_for_access_token(
 
 @app.post("/register", response_class=Response)
 async def register(user_data: Annotated[dict, Depends(check_and_extract_data)]):
+    '''
+    Creates user with specified data, if it matches format
+    '''
     add_user_to_db(user_data)
     return Response('Successful registration', status_code=status.HTTP_201_CREATED)
 
@@ -43,6 +50,11 @@ def view_contacts(
     per_page: int,
     page: int
 ):
+    '''
+    Returns data about all contacts in database, paginated by:
+        per_page: must be integer and >= 50
+        page: must be integer and >= 1
+    '''
     responce = []
     if per_page < 50:
         raise HTTPException(
@@ -66,6 +78,10 @@ def view_contacts(
     current_user: Annotated[UserModel, Depends(get_current_user)],
     contact_id: Annotated[int, Path(title='Odoo id of contact')]
 ):
+    '''
+    Returns information about single contact, found by odoo id:
+        contact_id: must be integer
+    '''
     with Session.begin() as session:
         contact = session.query(
             Contact

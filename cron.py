@@ -1,13 +1,23 @@
 import time
 import xmlrpc.client
 import argparse
+import os
 from db import Session, Contact
 
 url = 'https://chift.odoo.com/'
-login = password = 'a.kyrychenko@digiscorp.com'
+login = os.getenv('ODOO_LOGIN')
+password = os.getenv('ODOO_PASSWORD')
 db = 'chift'
 
 if __name__ == '__main__':
+    '''
+    Code in `while True` runs every x minutes, which were provided in args.
+    The code receives all the contacts from odoo account, then checks,
+    if such account is present in db. If it is, all mismatching fields 
+    are found and overwritten. If it is not, the contact is created.
+    All contacts, present in db and no longer present in odoo account,
+    will be deleted.
+    '''
     parser = argparse.ArgumentParser(description="Sleep for a specified number of minutes.")
     parser.add_argument("minutes", type=int, help="Number of minutes to sleep")
 

@@ -77,6 +77,12 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None):
     return encoded_jwt
 
 async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
+    '''
+    Receives and decodes JWT token:
+        key `sub` (subject): user's username, who token belongs to
+    Wrong JWT token will cause exception.
+    Returns authenticated user, if JWT token is valid.
+    '''
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail='Could not validate credentials',
