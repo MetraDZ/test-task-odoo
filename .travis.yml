@@ -1,0 +1,16 @@
+language: python
+python:
+  - "3.11"
+
+services:
+  - docker
+
+install:
+  - pip install -r requirements.txt
+
+branches:
+  only:
+    - master
+
+notifications:
+  email: false
