@@ -2,7 +2,7 @@ from typing import List
 from sqlalchemy import Column, Integer, String, create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 
-SQLALCHEMY_DATABASE_URL = "mysql+pymysql://root:root@172.17.0.2:3306/main" # TODO Insert url here <username>:<password>@<host>:<port>/<db_name>
+SQLALCHEMY_DATABASE_URL = 'sqlite:///example.db' # TODO Insert url here <username>:<password>@<host>:<port>/<db_name>
 
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
 Session = sessionmaker(bind=engine, autoflush=False)
